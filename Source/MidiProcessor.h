@@ -18,7 +18,7 @@ constexpr int CRASH_RIGHT_DEFAULT_VELOCITY_BREAK_POINT = 80;
 
 class MidiProcessor {
 private:
-	void processMessages(MidiBuffer& midiMessages) {
+	void processMessages(MidiBuffer midiMessages) {
 		MidiBuffer::Iterator it(midiMessages);
 		MidiMessage currentMessage;
 		int samplePos;
@@ -54,9 +54,10 @@ public:
 	void process(MidiBuffer& midiMessages) {
 		processedBuffer.clear();
 
-		processMessages(midiMessages);
-
-		midiMessages.swapWith(processedBuffer);
+		if (!midiMessages.isEmpty()) {
+			processMessages(midiMessages);
+			midiMessages.swapWith(processedBuffer);
+		}
 	};
 
 	MidiBuffer processedBuffer;
