@@ -32,16 +32,16 @@ private:
 		auto currentNote = currentMessage.getNoteNumber();
 		auto currentVelocity = currentMessage.getVelocity();
 
-		if (currentNote == HIHAT_DEFAULT_NOTE_NUMBER_IN && currentVelocity > hihatVelocity) {
-			return currentMessage.setNoteNumber(HIHAT_DEFAULT_NOTE_NUMBER_OUT);
+		if (currentNote == HIHAT_DEFAULT_NOTE_NUMBER_IN && currentVelocity <= hihatVelocity) {
+			currentMessage.setNoteNumber(HIHAT_DEFAULT_NOTE_NUMBER_OUT);
 		}
 
-		if (currentNote == CRASH_LEFT_DEFAULT_NOTE_NUMBER_IN && currentVelocity > crashLeftVelocity) {
-			return currentMessage.setNoteNumber(CRASH_LEFT_DEFAULT_NOTE_NUMBER_OUT);
+		if (currentNote == CRASH_LEFT_DEFAULT_NOTE_NUMBER_IN && currentVelocity <= crashLeftVelocity) {
+			currentMessage.setNoteNumber(CRASH_LEFT_DEFAULT_NOTE_NUMBER_OUT);
 		}
 
-		if (currentNote == CRASH_RIGHT_DEFAULT_NOTE_NUMBER_IN && currentVelocity > crashRightVelocity) {
-			return currentMessage.setNoteNumber(CRASH_RIGHT_DEFAULT_NOTE_NUMBER_OUT);
+		if (currentNote == CRASH_RIGHT_DEFAULT_NOTE_NUMBER_IN && currentVelocity <= crashRightVelocity) {
+			currentMessage.setNoteNumber(CRASH_RIGHT_DEFAULT_NOTE_NUMBER_OUT);
 		}
 
 		processedBuffer.addEvent(currentMessage, samplePos);
