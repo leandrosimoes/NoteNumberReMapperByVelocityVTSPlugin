@@ -6,15 +6,12 @@ using namespace juce;
 
 constexpr int HIHAT_DEFAULT_NOTE_NUMBER_IN = 8;
 constexpr int HIHAT_DEFAULT_NOTE_NUMBER_OUT = 7;
-constexpr int HIHAT_DEFAULT_VELOCITY_BREAK_POINT = 70;
 
 constexpr int CRASH_LEFT_DEFAULT_NOTE_NUMBER_IN = 49;
 constexpr int CRASH_LEFT_DEFAULT_NOTE_NUMBER_OUT = 48;
-constexpr int CRASH_LEFT_DEFAULT_VELOCITY_BREAK_POINT = 80;
 
 constexpr int CRASH_RIGHT_DEFAULT_NOTE_NUMBER_IN = 57;
 constexpr int CRASH_RIGHT_DEFAULT_NOTE_NUMBER_OUT = 56;
-constexpr int CRASH_RIGHT_DEFAULT_VELOCITY_BREAK_POINT = 80;
 
 class MidiProcessor {
 private:
@@ -35,15 +32,15 @@ private:
 		auto currentNote = currentMessage.getNoteNumber();
 		auto currentVelocity = currentMessage.getVelocity();
 
-		if (currentNote == HIHAT_DEFAULT_NOTE_NUMBER_IN && currentVelocity > HIHAT_DEFAULT_VELOCITY_BREAK_POINT) {
+		if (currentNote == HIHAT_DEFAULT_NOTE_NUMBER_IN && currentVelocity > hihatVelocity) {
 			return currentMessage.setNoteNumber(HIHAT_DEFAULT_NOTE_NUMBER_OUT);
 		}
 
-		if (currentNote == CRASH_LEFT_DEFAULT_NOTE_NUMBER_IN && currentVelocity > CRASH_LEFT_DEFAULT_VELOCITY_BREAK_POINT) {
+		if (currentNote == CRASH_LEFT_DEFAULT_NOTE_NUMBER_IN && currentVelocity > crashLeftVelocity) {
 			return currentMessage.setNoteNumber(CRASH_LEFT_DEFAULT_NOTE_NUMBER_OUT);
 		}
 
-		if (currentNote == CRASH_RIGHT_DEFAULT_NOTE_NUMBER_IN && currentVelocity > CRASH_RIGHT_DEFAULT_VELOCITY_BREAK_POINT) {
+		if (currentNote == CRASH_RIGHT_DEFAULT_NOTE_NUMBER_IN && currentVelocity > crashRightVelocity) {
 			return currentMessage.setNoteNumber(CRASH_RIGHT_DEFAULT_NOTE_NUMBER_OUT);
 		}
 
@@ -59,6 +56,10 @@ public:
 			midiMessages.swapWith(processedBuffer);
 		}
 	};
+
+	double hihatVelocity;
+	double crashLeftVelocity;
+	double crashRightVelocity;
 
 	MidiBuffer processedBuffer;
 };

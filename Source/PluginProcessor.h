@@ -57,6 +57,17 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    void setHiHatVelocity(double value) {
+        midiProcessor.hihatVelocity = value;
+    }
+
+    void setCrashLeftVelocity(double value) {
+        midiProcessor.crashLeftVelocity = value;
+    }
+
+    void setCrashRightVelocity(double value) {
+        midiProcessor.crashRightVelocity = value;
+    }
 private:
     MidiProcessor midiProcessor;
 
