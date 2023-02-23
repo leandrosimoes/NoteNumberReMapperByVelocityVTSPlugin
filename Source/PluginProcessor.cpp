@@ -19,9 +19,18 @@ NoteNumberRemaperByVelocityAudioProcessor::NoteNumberRemaperByVelocityAudioProce
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+                        parameters(*this, nullptr, juce::Identifier("NoteNumberRemaperByVelocityAudioProcessor"),
+                        {
+                            std::make_unique<juce::AudioParameterFloat>("hihatVelocity", "HihatVelocity", 0.0f, 127.0f, 70.0f),
+                            std::make_unique<juce::AudioParameterFloat>("crashLeftVelocity", "CrashLeftVelocity", 0.0f, 127.0f, 70.0f),
+                            std::make_unique<juce::AudioParameterFloat>("crashRightVelocity", "CrashRightVelocity", 0.0f, 127.0f, 70.0f),
+                        })
 #endif
 {
+    hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
+    crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
+    crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
 }
 
 NoteNumberRemaperByVelocityAudioProcessor::~NoteNumberRemaperByVelocityAudioProcessor()
@@ -152,12 +161,21 @@ void NoteNumberRemaperByVelocityAudioProcessor::getStateInformation (juce::Memor
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    auto state = parameters.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    if (xmlState.get() != nullptr)
+        if (xmlState->hasTagName(parameters.state.getType()))
+            parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
 }
 
 //==============================================================================

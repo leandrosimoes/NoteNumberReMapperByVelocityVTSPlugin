@@ -11,6 +11,8 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+
 //==============================================================================
 /**
 */
@@ -31,9 +33,18 @@ private:
     // access the processor object that created it.
     NoteNumberRemaperByVelocityAudioProcessor& audioProcessor;
 
+    Label titleLabel;
+    Label hihatLabel;
+    Label crashLeftLabel;
+    Label crashRightLabel;
+
     Slider hihatSlider;
     Slider crashLeftSlider;
     Slider crashRightSlider;
+
+    std::unique_ptr<SliderAttachment> hihatSliderAttachment;
+    std::unique_ptr<SliderAttachment> crashLeftSliderAttachment;
+    std::unique_ptr<SliderAttachment> crashRightSliderAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NoteNumberRemaperByVelocityAudioProcessorEditor)
 };

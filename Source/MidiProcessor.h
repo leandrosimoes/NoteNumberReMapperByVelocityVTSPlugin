@@ -32,15 +32,15 @@ private:
 		auto currentNote = currentMessage.getNoteNumber();
 		auto currentVelocity = currentMessage.getVelocity();
 
-		if (currentNote == HIHAT_DEFAULT_NOTE_NUMBER_IN && currentVelocity <= hihatVelocity) {
+		if (currentNote == HIHAT_DEFAULT_NOTE_NUMBER_IN && currentVelocity <= roundFloatToInt(hihatVelocity->load())) {
 			currentMessage.setNoteNumber(HIHAT_DEFAULT_NOTE_NUMBER_OUT);
 		}
 
-		if (currentNote == CRASH_LEFT_DEFAULT_NOTE_NUMBER_IN && currentVelocity <= crashLeftVelocity) {
+		if (currentNote == CRASH_LEFT_DEFAULT_NOTE_NUMBER_IN && currentVelocity <= roundFloatToInt(crashLeftVelocity->load())) {
 			currentMessage.setNoteNumber(CRASH_LEFT_DEFAULT_NOTE_NUMBER_OUT);
 		}
 
-		if (currentNote == CRASH_RIGHT_DEFAULT_NOTE_NUMBER_IN && currentVelocity <= crashRightVelocity) {
+		if (currentNote == CRASH_RIGHT_DEFAULT_NOTE_NUMBER_IN && currentVelocity <= roundFloatToInt(crashRightVelocity->load())) {
 			currentMessage.setNoteNumber(CRASH_RIGHT_DEFAULT_NOTE_NUMBER_OUT);
 		}
 
@@ -57,9 +57,9 @@ public:
 		}
 	};
 
-	double hihatVelocity;
-	double crashLeftVelocity;
-	double crashRightVelocity;
+	std::atomic<float>* hihatVelocity = nullptr;
+	std::atomic<float>* crashLeftVelocity = nullptr;
+	std::atomic<float>* crashRightVelocity = nullptr;
 
 	MidiBuffer processedBuffer;
 };

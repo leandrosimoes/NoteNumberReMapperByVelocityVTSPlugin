@@ -58,16 +58,23 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     void setHiHatVelocity(double value) {
-        midiProcessor.hihatVelocity = value;
+        midiProcessor.hihatVelocity = hihatVelocity;
     }
 
     void setCrashLeftVelocity(double value) {
-        midiProcessor.crashLeftVelocity = value;
+        midiProcessor.crashLeftVelocity = crashLeftVelocity;
     }
 
     void setCrashRightVelocity(double value) {
-        midiProcessor.crashRightVelocity = value;
+        midiProcessor.crashRightVelocity = crashRightVelocity;
     }
+
+    AudioProcessorValueTreeState parameters;
+
+    std::atomic<float>* hihatVelocity = nullptr;
+    std::atomic<float>* crashLeftVelocity = nullptr;
+    std::atomic<float>* crashRightVelocity = nullptr;
+
 private:
     MidiProcessor midiProcessor;
 
