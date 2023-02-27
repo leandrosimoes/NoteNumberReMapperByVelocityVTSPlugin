@@ -92,9 +92,9 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::resized()
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::sliderValueChanged(Slider* slider) {
     if (slider == &hihatSlider)
-        audioProcessor.setHiHatVelocity(slider->getValue());
+        audioProcessor.hihatVelocity->store(slider->getValue());
     else if (slider == &crashLeftSlider)
-        audioProcessor.setCrashLeftVelocity(slider->getValue());
+        audioProcessor.crashLeftVelocity->store(slider->getValue());
     else if (slider == &crashRightSlider)
-        audioProcessor.setCrashRightVelocity(slider->getValue());
+        audioProcessor.crashRightVelocity->store(slider->getValue());
 }

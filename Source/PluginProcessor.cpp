@@ -141,6 +141,16 @@ bool NoteNumberRemaperByVelocityAudioProcessor::isBusesLayoutSupported (const Bu
 void NoteNumberRemaperByVelocityAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     buffer.clear();
+
+    if (midiProcessor.hihatVelocity == nullptr)
+        midiProcessor.hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
+
+    if (midiProcessor.crashLeftVelocity == nullptr)
+        midiProcessor.crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
+
+    if (midiProcessor.crashRightVelocity == nullptr)
+        midiProcessor.crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
+
     midiProcessor.process(midiMessages);
 }
 
@@ -166,7 +176,7 @@ void NoteNumberRemaperByVelocityAudioProcessor::getStateInformation (juce::Memor
     copyXmlToBinary(*xml, destData);
 }
 
-void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -174,8 +184,13 @@ void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation (const void*
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
     if (xmlState.get() != nullptr)
-        if (xmlState->hasTagName(parameters.state.getType()))
+        if (xmlState->hasTagName(parameters.state.getType())) {
             parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
+
+            hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
+            crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
+            crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
+        }
 }
 
 //==============================================================================
