@@ -47,17 +47,36 @@ NoteNumberRemaperByVelocityAudioProcessorEditor::NoteNumberRemaperByVelocityAudi
     crashRightLabel.setText("Crash R", juce::dontSendNotification);
     crashRightLabel.setJustificationType(Justification::centred);
 
+    hihatNoteInCB.addSectionHeading("Note IN");
+    hihatNoteInCB.addSeparator();
+    hihatNoteOutCB.addSectionHeading("Note OUT");
+    hihatNoteOutCB.addSeparator();
+
+    for (int i = 127; i >= 0; i--) {
+        hihatNoteInCB.addItem(std::to_string(i), i + 1);
+        hihatNoteOutCB.addItem(std::to_string(i), i + 1);
+    }
+    hihatNoteInCB.setSelectedId(8);
+    hihatNoteOutCB.setSelectedId(7);
+
     addAndMakeVisible(hihatSlider);
     addAndMakeVisible(crashLeftSlider);
     addAndMakeVisible(crashRightSlider);
+
     addAndMakeVisible(titleLabel);
     addAndMakeVisible(hihatLabel);
     addAndMakeVisible(crashLeftLabel);
     addAndMakeVisible(crashRightLabel);
 
+    addAndMakeVisible(hihatNoteInCB);
+    addAndMakeVisible(hihatNoteOutCB);
+
     hihatSliderAttachment.reset(new SliderAttachment(audioProcessor.parameters, "hihatVelocity", hihatSlider));
     crashLeftSliderAttachment.reset(new SliderAttachment(audioProcessor.parameters, "crashLeftVelocity", crashLeftSlider));
     crashRightSliderAttachment.reset(new SliderAttachment(audioProcessor.parameters, "crashRightVelocity", crashRightSlider));
+
+    hihatNoteInCBAttachment.reset(new ComboBoxAttatchment(audioProcessor.parameters, "hihatNoteIn", hihatNoteInCB));
+    hihatNoteOutCBAttachment.reset(new ComboBoxAttatchment(audioProcessor.parameters, "hihatNoteOut", hihatNoteOutCB));
 }
 
 NoteNumberRemaperByVelocityAudioProcessorEditor::~NoteNumberRemaperByVelocityAudioProcessorEditor()
@@ -79,15 +98,20 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 
-    hihatSlider.setBounds(50, 50, 100, 200);
-    crashLeftSlider.setBounds(200, 50, 100, 200);
-    crashRightSlider.setBounds(350, 50, 100, 200);
+    hihatNoteOutCB.setBounds(50, 50, 100, 30);
+
+    hihatSlider.setBounds(hihatNoteOutCB.getX(), hihatNoteOutCB.getY() + hihatNoteOutCB.getHeight() + 5, hihatNoteOutCB.getWidth(), 200);
+    crashLeftSlider.setBounds(200, 100, 100, 200);
+    crashRightSlider.setBounds(350, 100, 100, 200);
+
+    hihatNoteInCB.setBounds(hihatSlider.getX(), hihatSlider.getY() + hihatSlider.getHeight() + 5, hihatSlider.getWidth(), 30);
 
     titleLabel.setBounds(0, 10, getWidth(), 30);
 
-    hihatLabel.setBounds(hihatSlider.getX(), hihatSlider.getHeight() + 50, hihatSlider.getWidth(), 30);
-    crashLeftLabel.setBounds(crashLeftSlider.getX(), crashLeftSlider.getHeight() + 50, crashLeftSlider.getWidth(), 30);
-    crashRightLabel.setBounds(crashRightSlider.getX(), crashRightSlider.getHeight() + 50, crashRightSlider.getWidth(), 30);
+    hihatLabel.setBounds(hihatNoteInCB.getX(), hihatNoteInCB.getY() + 5, hihatNoteInCB.getWidth(), 30);
+    crashLeftLabel.setBounds(crashLeftSlider.getX(), crashLeftSlider.getHeight() + 100, crashLeftSlider.getWidth(), 30);
+    crashRightLabel.setBounds(crashRightSlider.getX(), crashRightSlider.getHeight() + 100, crashRightSlider.getWidth(), 30);
+
 }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::sliderValueChanged(Slider* slider) {
@@ -97,4 +121,11 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::sliderValueChanged(Slider*
         audioProcessor.crashLeftVelocity->store(slider->getValue());
     else if (slider == &crashRightSlider)
         audioProcessor.crashRightVelocity->store(slider->getValue());
+}
+
+void NoteNumberRemaperByVelocityAudioProcessorEditor::comboBoxChanged(ComboBox* cb) {
+    if (cb == &hihatNoteInCB)
+        audioProcessor.hihatNoteIn->store(cb->getSelectedIdAsValue().getValue());
+    if (cb == &hihatNoteOutCB)
+        audioProcessor.hihatNoteOut->store(cb->getSelectedIdAsValue().getValue());
 }

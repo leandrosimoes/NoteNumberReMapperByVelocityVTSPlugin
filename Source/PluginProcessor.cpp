@@ -25,12 +25,17 @@ NoteNumberRemaperByVelocityAudioProcessor::NoteNumberRemaperByVelocityAudioProce
                             std::make_unique<juce::AudioParameterFloat>("hihatVelocity", "HihatVelocity", 0.0f, 127.0f, 70.0f),
                             std::make_unique<juce::AudioParameterFloat>("crashLeftVelocity", "CrashLeftVelocity", 0.0f, 127.0f, 70.0f),
                             std::make_unique<juce::AudioParameterFloat>("crashRightVelocity", "CrashRightVelocity", 0.0f, 127.0f, 70.0f),
+                            std::make_unique<juce::AudioParameterFloat>("hihatNoteIn", "HihatNoteIn", 0.0f, 127.0f, 8.0f),
+                            std::make_unique<juce::AudioParameterFloat>("hihatNoteOut", "HihatNoteOut", 0.0f, 127.0f, 7.0f),
                         })
 #endif
 {
     hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
     crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
     crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
+
+    hihatNoteIn = parameters.getRawParameterValue("hihatNoteIn");
+    hihatNoteOut = parameters.getRawParameterValue("hihatNoteOut");
 }
 
 NoteNumberRemaperByVelocityAudioProcessor::~NoteNumberRemaperByVelocityAudioProcessor()
@@ -151,6 +156,12 @@ void NoteNumberRemaperByVelocityAudioProcessor::processBlock (juce::AudioBuffer<
     if (midiProcessor.crashRightVelocity == nullptr)
         midiProcessor.crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
 
+    if (midiProcessor.hihatNoteIn == nullptr)
+        midiProcessor.hihatNoteIn = parameters.getRawParameterValue("hihatNoteIn");
+
+    if (midiProcessor.hihatNoteOut == nullptr)
+        midiProcessor.hihatNoteOut = parameters.getRawParameterValue("hihatNoteOut");
+
     midiProcessor.process(midiMessages);
 }
 
@@ -190,6 +201,9 @@ void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation(const void* 
             hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
             crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
             crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
+
+            hihatNoteIn = parameters.getRawParameterValue("hihatNoteIn");
+            hihatNoteOut = parameters.getRawParameterValue("hihatNoteOut");
         }
 }
 

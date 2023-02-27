@@ -63,8 +63,8 @@ public:
     std::atomic<float>* crashLeftVelocity = nullptr;
     std::atomic<float>* crashRightVelocity = nullptr;
 
-    std::atomic<int>* hihatNoteIn = nullptr;
-    std::atomic<int>* hihatNoteOut = nullptr;
+    std::atomic<float>* hihatNoteIn = nullptr;
+    std::atomic<float>* hihatNoteOut = nullptr;
 
 private:
     MidiProcessor midiProcessor;
