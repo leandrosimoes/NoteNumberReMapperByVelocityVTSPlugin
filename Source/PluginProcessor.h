@@ -58,17 +58,9 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     AudioProcessorValueTreeState parameters;
-
-    std::atomic<float>* hihatVelocity = nullptr;
-    std::atomic<float>* crashLeftVelocity = nullptr;
-    std::atomic<float>* crashRightVelocity = nullptr;
-
-    std::atomic<float>* hihatNoteIn = nullptr;
-    std::atomic<float>* hihatNoteOut = nullptr;
-
-private:
     MidiProcessor midiProcessor;
 
+private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NoteNumberRemaperByVelocityAudioProcessor)
 };

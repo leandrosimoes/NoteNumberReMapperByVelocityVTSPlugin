@@ -22,20 +22,18 @@ NoteNumberRemaperByVelocityAudioProcessor::NoteNumberRemaperByVelocityAudioProce
                        ),
                         parameters(*this, nullptr, juce::Identifier("NoteNumberRemaperByVelocityAudioProcessor"),
                         {
-                            std::make_unique<juce::AudioParameterFloat>("hihatVelocity", "HihatVelocity", 0.0f, 127.0f, 70.0f),
-                            std::make_unique<juce::AudioParameterFloat>("crashLeftVelocity", "CrashLeftVelocity", 0.0f, 127.0f, 70.0f),
-                            std::make_unique<juce::AudioParameterFloat>("crashRightVelocity", "CrashRightVelocity", 0.0f, 127.0f, 70.0f),
-                            std::make_unique<juce::AudioParameterFloat>("hihatNoteIn", "HihatNoteIn", 0.0f, 127.0f, 8.0f),
-                            std::make_unique<juce::AudioParameterFloat>("hihatNoteOut", "HihatNoteOut", 0.0f, 127.0f, 7.0f),
+                            std::make_unique<juce::AudioParameterFloat>("hihatVelocity", "HihatVelocity", 0.0f, 127.0f, 75.0f),
+                            std::make_unique<juce::AudioParameterFloat>("crashLeftVelocity", "CrashLeftVelocity", 0.0f, 127.0f, 80.0f),
+                            std::make_unique<juce::AudioParameterFloat>("crashRightVelocity", "CrashRightVelocity", 0.0f, 127.0f, 80.0f),
+                            std::make_unique<juce::AudioParameterInt>("hihatNoteIn", "HihatNoteIn", 1, 128, 9),
+                            std::make_unique<juce::AudioParameterInt>("hihatNoteOut", "HihatNoteOut", 1, 128, 8),
+                            std::make_unique<juce::AudioParameterInt>("crashLeftNoteIn", "CrashLeftNoteIn", 1, 128, 50),
+                            std::make_unique<juce::AudioParameterInt>("crashLeftNoteOut", "CrashLeftNoteOut", 1, 128, 49),
+                            std::make_unique<juce::AudioParameterInt>("crashRightNoteIn", "CrashRightNoteIn", 1, 128, 58),
+                            std::make_unique<juce::AudioParameterInt>("crashRightNoteOut", "CrashRightNoteOut", 1, 128, 57)
                         })
 #endif
 {
-    hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
-    crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
-    crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
-
-    hihatNoteIn = parameters.getRawParameterValue("hihatNoteIn");
-    hihatNoteOut = parameters.getRawParameterValue("hihatNoteOut");
 }
 
 NoteNumberRemaperByVelocityAudioProcessor::~NoteNumberRemaperByVelocityAudioProcessor()
@@ -146,22 +144,6 @@ bool NoteNumberRemaperByVelocityAudioProcessor::isBusesLayoutSupported (const Bu
 void NoteNumberRemaperByVelocityAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     buffer.clear();
-
-    if (midiProcessor.hihatVelocity == nullptr)
-        midiProcessor.hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
-
-    if (midiProcessor.crashLeftVelocity == nullptr)
-        midiProcessor.crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
-
-    if (midiProcessor.crashRightVelocity == nullptr)
-        midiProcessor.crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
-
-    if (midiProcessor.hihatNoteIn == nullptr)
-        midiProcessor.hihatNoteIn = parameters.getRawParameterValue("hihatNoteIn");
-
-    if (midiProcessor.hihatNoteOut == nullptr)
-        midiProcessor.hihatNoteOut = parameters.getRawParameterValue("hihatNoteOut");
-
     midiProcessor.process(midiMessages);
 }
 
@@ -194,17 +176,26 @@ void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation(const void* 
 
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
-    if (xmlState.get() != nullptr)
+    midiProcessor.setDefaultValues();
+
+    if (xmlState.get() != nullptr) {
         if (xmlState->hasTagName(parameters.state.getType())) {
             parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
 
-            hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
-            crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
-            crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
+            midiProcessor.hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
+            midiProcessor.crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
+            midiProcessor.crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
 
-            hihatNoteIn = parameters.getRawParameterValue("hihatNoteIn");
-            hihatNoteOut = parameters.getRawParameterValue("hihatNoteOut");
+            midiProcessor.hihatNoteIn->store(roundFloatToInt(parameters.getRawParameterValue("hihatNoteIn")->load()));
+            midiProcessor.hihatNoteOut->store(roundFloatToInt(parameters.getRawParameterValue("hihatNoteOut")->load()));
+
+            midiProcessor.crashLeftNoteIn->store(roundFloatToInt(parameters.getRawParameterValue("crashLeftNoteIn")->load()));
+            midiProcessor.crashLeftNoteOut->store(roundFloatToInt(parameters.getRawParameterValue("crashLeftNoteOut")->load()));
+
+            midiProcessor.crashRightNoteIn->store(roundFloatToInt(parameters.getRawParameterValue("crashRightNoteIn")->load()));
+            midiProcessor.crashRightNoteOut->store(roundFloatToInt(parameters.getRawParameterValue("crashRightNoteOut")->load()));
         }
+    }
 }
 
 //==============================================================================
