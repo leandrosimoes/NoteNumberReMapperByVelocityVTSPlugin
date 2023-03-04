@@ -1,4 +1,4 @@
-# Note Number Remaper By Velocity VTS Plugin (Beta)
+# Note Number ReMapper By Velocity VTS Plugin (Beta)
 
 [<img src="https://img.shields.io/badge/slack-@lesimoes/help-blue.svg?logo=slack">](https://lesimoes.slack.com/messages/C04JV5CRGJH) 
 [<img src="https://img.shields.io/badge/discord-@lesimoes/help-blue.svg?logo=discord">](https://discord.gg/7xegRfQjPz) 
@@ -13,3 +13,8 @@ For the next version, I decided to turn this plugin into a more generic version 
 ### How to use this plugin?
 I'm currently working on a video tutorial, but basically, you have to use this as a middleware from your midi device to the other midi plugins.
 
+### Credits
+
+This project was created using [Juce Framework](https://juce.com/).
+
+<img src="https://juce.com/wp-content/uploads/2022/07/JUCE-logo-horiz-ondark.png">
