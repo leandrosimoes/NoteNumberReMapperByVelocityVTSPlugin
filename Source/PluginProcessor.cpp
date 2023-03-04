@@ -22,15 +22,18 @@ NoteNumberRemaperByVelocityAudioProcessor::NoteNumberRemaperByVelocityAudioProce
                        ),
                         parameters(*this, nullptr, juce::Identifier("NoteNumberRemaperByVelocityAudioProcessor"),
                         {
-                            std::make_unique<juce::AudioParameterFloat>("hihatVelocity", "HihatVelocity", 0.0f, 127.0f, 70.0f),
-                            std::make_unique<juce::AudioParameterFloat>("crashLeftVelocity", "CrashLeftVelocity", 0.0f, 127.0f, 70.0f),
-                            std::make_unique<juce::AudioParameterFloat>("crashRightVelocity", "CrashRightVelocity", 0.0f, 127.0f, 70.0f),
+                            std::make_unique<juce::AudioParameterFloat>("hihatVelocity", "HihatVelocity", 0.0f, 127.0f, 75.0f),
+                            std::make_unique<juce::AudioParameterFloat>("crashLeftVelocity", "CrashLeftVelocity", 0.0f, 127.0f, 80.0f),
+                            std::make_unique<juce::AudioParameterFloat>("crashRightVelocity", "CrashRightVelocity", 0.0f, 127.0f, 80.0f),
+                            std::make_unique<juce::AudioParameterInt>("hihatNoteIn", "HihatNoteIn", 1, 128, 9),
+                            std::make_unique<juce::AudioParameterInt>("hihatNoteOut", "HihatNoteOut", 1, 128, 8),
+                            std::make_unique<juce::AudioParameterInt>("crashLeftNoteIn", "CrashLeftNoteIn", 1, 128, 50),
+                            std::make_unique<juce::AudioParameterInt>("crashLeftNoteOut", "CrashLeftNoteOut", 1, 128, 49),
+                            std::make_unique<juce::AudioParameterInt>("crashRightNoteIn", "CrashRightNoteIn", 1, 128, 58),
+                            std::make_unique<juce::AudioParameterInt>("crashRightNoteOut", "CrashRightNoteOut", 1, 128, 57)
                         })
 #endif
 {
-    hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
-    crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
-    crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
 }
 
 NoteNumberRemaperByVelocityAudioProcessor::~NoteNumberRemaperByVelocityAudioProcessor()
@@ -166,16 +169,33 @@ void NoteNumberRemaperByVelocityAudioProcessor::getStateInformation (juce::Memor
     copyXmlToBinary(*xml, destData);
 }
 
-void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
 
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
-    if (xmlState.get() != nullptr)
-        if (xmlState->hasTagName(parameters.state.getType()))
+    midiProcessor.setDefaultValues();
+
+    if (xmlState.get() != nullptr) {
+        if (xmlState->hasTagName(parameters.state.getType())) {
             parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
+
+            midiProcessor.hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
+            midiProcessor.crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
+            midiProcessor.crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
+
+            midiProcessor.hihatNoteIn->store(roundFloatToInt(parameters.getRawParameterValue("hihatNoteIn")->load()));
+            midiProcessor.hihatNoteOut->store(roundFloatToInt(parameters.getRawParameterValue("hihatNoteOut")->load()));
+
+            midiProcessor.crashLeftNoteIn->store(roundFloatToInt(parameters.getRawParameterValue("crashLeftNoteIn")->load()));
+            midiProcessor.crashLeftNoteOut->store(roundFloatToInt(parameters.getRawParameterValue("crashLeftNoteOut")->load()));
+
+            midiProcessor.crashRightNoteIn->store(roundFloatToInt(parameters.getRawParameterValue("crashRightNoteIn")->load()));
+            midiProcessor.crashRightNoteOut->store(roundFloatToInt(parameters.getRawParameterValue("crashRightNoteOut")->load()));
+        }
+    }
 }
 
 //==============================================================================
