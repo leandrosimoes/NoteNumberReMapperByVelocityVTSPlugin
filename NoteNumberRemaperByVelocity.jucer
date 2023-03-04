@@ -4,7 +4,7 @@
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
               jucerFormatVersion="1" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
               companyName="lesimoes.dev" companyCopyright="lesimoes.dev" companyWebsite="lesimoes.dev"
-              companyEmail="contact@lesimoes.dev">
+              companyEmail="contact@lesimoes.dev" version="0.1.0">
   <MAINGROUP id="wYGtXm" name="Note Number Remaper By Velocity">
     <GROUP id="{B0EBBFF2-A38C-3865-A49E-9362B49F19D6}" name="Source">
       <FILE id="mINphj" name="MidiProcessor.h" compile="0" resource="0" file="Source/MidiProcessor.h"/>
