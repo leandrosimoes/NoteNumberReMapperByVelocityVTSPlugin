@@ -29,6 +29,12 @@ public:
 
     void sliderValueChanged(Slider* slider) override;
 
+    void setupGroups();
+    void setupNoteInCBs();
+    void setupSliders();
+    void setupNoteOutCBs();
+    void setupResetButton();
+
     void comboBoxChanged(ComboBox* cb) override;
 
 private:
