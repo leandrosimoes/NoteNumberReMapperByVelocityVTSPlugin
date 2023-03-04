@@ -20,7 +20,7 @@ NoteNumberRemaperByVelocityAudioProcessorEditor::NoteNumberRemaperByVelocityAudi
     // editor's size to whatever you need it to be.
     setSize (WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    titleLabel.setText("Set the velocity break points", juce::dontSendNotification);
+    titleLabel.setText("Note Number Remaper By Velocity", juce::dontSendNotification);
     titleLabel.setJustificationType(Justification::centred);
 
     addAndMakeVisible(titleLabel);

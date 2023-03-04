@@ -41,19 +41,19 @@
  #define JucePlugin_Enable_ARA             0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "NoteNumberRemaperByVelocity"
+ #define JucePlugin_Name                   "Note Number Remaper By Velocity"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "NoteNumberRemaperByVelocity"
+ #define JucePlugin_Desc                   "Note Number Remaper By Velocity"
 #endif
 #ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "yourcompany"
+ #define JucePlugin_Manufacturer           "lesimoes.dev"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
- #define JucePlugin_ManufacturerWebsite    "www.yourcompany.com"
+ #define JucePlugin_ManufacturerWebsite    "lesimoes.dev"
 #endif
 #ifndef  JucePlugin_ManufacturerEmail
- #define JucePlugin_ManufacturerEmail      ""
+ #define JucePlugin_ManufacturerEmail      "contact@lesimoes.dev"
 #endif
 #ifndef  JucePlugin_ManufacturerCode
  #define JucePlugin_ManufacturerCode       0x4d616e75
@@ -110,10 +110,10 @@
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.yourcompany.NoteNumberRemaperByVelocity
+ #define JucePlugin_CFBundleIdentifier     com.lesimoes_dev.NoteNumberRemaperByVelocity
 #endif
 #ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          com.yourcompany.NoteNumberRemaperByVelocity
+ #define JucePlugin_AAXIdentifier          com.lesimoes_dev.NoteNumberRemaperByVelocity
 #endif
 #ifndef  JucePlugin_AAXManufacturerCode
  #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode
@@ -137,7 +137,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "yourcompany: NoteNumberRemaperByVelocity"
+ #define JucePlugin_IAAName                "lesimoes.dev: Note Number Remaper By Velocity"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16
@@ -152,10 +152,10 @@
  #define JucePlugin_ARATransformationFlags  0
 #endif
 #ifndef  JucePlugin_ARAFactoryID
- #define JucePlugin_ARAFactoryID           "com.yourcompany.NoteNumberRemaperByVelocity.factory"
+ #define JucePlugin_ARAFactoryID           "com.lesimoes_dev.NoteNumberRemaperByVelocity.factory"
 #endif
 #ifndef  JucePlugin_ARADocumentArchiveID
- #define JucePlugin_ARADocumentArchiveID   "com.yourcompany.NoteNumberRemaperByVelocity.aradocumentarchive.1.0.0"
+ #define JucePlugin_ARADocumentArchiveID   "com.lesimoes_dev.NoteNumberRemaperByVelocity.aradocumentarchive.1.0.0"
 #endif
 #ifndef  JucePlugin_ARACompatibleArchiveIDs
  #define JucePlugin_ARACompatibleArchiveIDs  ""
