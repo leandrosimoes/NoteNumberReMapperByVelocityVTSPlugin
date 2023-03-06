@@ -231,29 +231,25 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::resized()
 }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::sliderValueChanged(Slider* slider) {
-    auto currentValue = slider->getValue();
-
     if (slider == &hihatSlider)
-        audioProcessor.midiProcessor.hihatVelocity->store(currentValue);
-    else if (slider == &crashLeftSlider)
-        audioProcessor.midiProcessor.crashLeftVelocity->store(currentValue);
-    else if (slider == &crashRightSlider)
-        audioProcessor.midiProcessor.crashRightVelocity->store(currentValue);
+        audioProcessor.midiProcessor.hihatVelocity->store(slider->getValue());
+    if (slider == &crashLeftSlider)
+        audioProcessor.midiProcessor.crashLeftVelocity->store(slider->getValue());
+    if (slider == &crashRightSlider)
+        audioProcessor.midiProcessor.crashRightVelocity->store(slider->getValue());
 }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::comboBoxChanged(ComboBox* cb) {
-    auto currentValue = cb->getSelectedIdAsValue().getValue();
-
     if (cb == &hihatNoteInCB)
-        audioProcessor.midiProcessor.hihatNoteIn->store(currentValue);
+        audioProcessor.midiProcessor.hihatNoteIn->store(cb->getSelectedIdAsValue().getValue());
     if (cb == &hihatNoteOutCB)
-        audioProcessor.midiProcessor.hihatNoteOut->store(currentValue);
+        audioProcessor.midiProcessor.hihatNoteOut->store(cb->getSelectedIdAsValue().getValue());
     if (cb == &crashLeftNoteInCB)
-        audioProcessor.midiProcessor.crashLeftNoteIn->store(currentValue);
+        audioProcessor.midiProcessor.crashLeftNoteIn->store(cb->getSelectedIdAsValue().getValue());
     if (cb == &crashLeftNoteOutCB)
-        audioProcessor.midiProcessor.crashLeftNoteOut->store(currentValue);
+        audioProcessor.midiProcessor.crashLeftNoteOut->store(cb->getSelectedIdAsValue().getValue());
     if (cb == &crashRightNoteInCB)
-        audioProcessor.midiProcessor.crashRightNoteIn->store(currentValue);
+        audioProcessor.midiProcessor.crashRightNoteIn->store(cb->getSelectedIdAsValue().getValue());
     if (cb == &crashRightNoteOutCB)
-        audioProcessor.midiProcessor.crashRightNoteOut->store(currentValue);
+        audioProcessor.midiProcessor.crashRightNoteOut->store(cb->getSelectedIdAsValue().getValue());
 }
