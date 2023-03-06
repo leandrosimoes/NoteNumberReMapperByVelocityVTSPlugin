@@ -34,6 +34,7 @@ NoteNumberRemaperByVelocityAudioProcessor::NoteNumberRemaperByVelocityAudioProce
                         })
 #endif
 {
+    midiProcessor.setDefaultValues();
 }
 
 NoteNumberRemaperByVelocityAudioProcessor::~NoteNumberRemaperByVelocityAudioProcessor()
@@ -175,8 +176,6 @@ void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation(const void* 
     // whose contents will have been created by the getStateInformation() call.
 
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
-
-    midiProcessor.setDefaultValues();
 
     if (xmlState.get() != nullptr) {
         if (xmlState->hasTagName(parameters.state.getType())) {
