@@ -20,15 +20,16 @@ private:
 	}
 
 	void remapNote(MidiMessage currentMessage, int samplePos) {
-		auto currentNote = currentMessage.getNoteNumber();
-		auto currentVelocity = currentMessage.getVelocity();
-
-		int index = -1;
+		auto currentNotePlayed = currentMessage.getNoteNumber();
+		auto currentVelocityPlayed = currentMessage.getVelocity();
 
 		for (int i = 0; i < 22; i++)
 		{
-			if ((notesIn[i]->load() - 1) == currentNote && currentVelocity <= roundFloatToInt(velocities[i]->load()))
-				currentMessage.setNoteNumber(notesOut[i]->load() - 1);
+			int currentNoteIn = (notesIn[i]->load() - 2);
+			float currentVelocity = roundFloatToInt(velocities[i]->load());
+
+			if (currentNoteIn >= 0 && currentNoteIn == currentNotePlayed && currentVelocityPlayed <= currentVelocity)
+				currentMessage.setNoteNumber((notesOut[i]->load() - 2));
 		}
 
 		processedBuffer.addEvent(currentMessage, samplePos);

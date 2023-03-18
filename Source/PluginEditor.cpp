@@ -9,7 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-const int WINDOW_WIDTH = 900;
+const int WINDOW_WIDTH = 1080;
 const int WINDOW_HEIGHT = 600;
 
 //==============================================================================
@@ -39,8 +39,11 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::setupNoteInCBs() {
         comboboxesIn[i].addSeparator();
         comboboxesIn[i].addListener(this);
 
-        for (int j = 0; j <= 127; j++) {
-            comboboxesIn[i].addItem(std::to_string(j), j + 1);
+        for (int j = 0; j <= 128; j++) {
+            if (j == 0)
+                comboboxesIn[i].addItem("off", j + 1);
+            else
+                comboboxesIn[i].addItem(std::to_string(j - 1), j + 1);
         }
 
         addAndMakeVisible(comboboxesIn[i]);
@@ -51,7 +54,14 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::setupNoteInCBs() {
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::setupResetButton() {
     resetButton.setButtonText("Reset");
-    resetButton.onClick = [this]() {};
+    resetButton.onClick = [this]() {
+        for (int i = 0; i < 22; i++)
+        {
+            comboboxesIn[i].setSelectedId(1);
+            comboboxesOut[i].setSelectedId(1);
+            sliders[i].setValue(75.0f);
+        }
+    };
 
     addAndMakeVisible(resetButton);
 }
@@ -63,8 +73,11 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::setupNoteOutCBs() {
         comboboxesOut[i].addSeparator();
         comboboxesOut[i].addListener(this);
 
-        for (int j = 0; j <= 127; j++) {
-            comboboxesOut[i].addItem(std::to_string(j), j + 1);
+        for (int j = 0; j <= 128; j++) {
+            if (j == 0)
+                comboboxesOut[i].addItem("off", j + 1);
+            else
+                comboboxesOut[i].addItem(std::to_string(j - 1), j + 1);
         }
 
         addAndMakeVisible(comboboxesOut[i]);
@@ -121,7 +134,7 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::resized()
         groups[i].setText(std::to_string(i + 1));
 
         if (i == 0) {
-            groups[i].setBounds(50, titleLabel.getY() + titleLabel.getHeight() + 5, (WINDOW_WIDTH - 150) / 11, (WINDOW_HEIGHT - 100) / 2);
+            groups[i].setBounds(25, titleLabel.getY() + titleLabel.getHeight() + 5, (WINDOW_WIDTH - 100) / 11, (WINDOW_HEIGHT - 100) / 2);
             comboboxesOut[i].setBounds(groups[i].getX() + 10, groups[i].getY() + 15, groups[i].getWidth() - 20, 30);
         }
         else if (i > 0 && i < 11) {
@@ -129,7 +142,7 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::resized()
             comboboxesOut[i].setBounds(groups[i].getX() + 10, groups[i].getY() + 15, comboboxesOut[i - 1].getWidth(), comboboxesOut[i - 1].getHeight());
         }
         else if (i == 11) {
-            groups[i].setBounds(50, titleLabel.getY() + titleLabel.getHeight() + 5 + groups[i - 1].getHeight() + 5, groups[i - 1].getWidth(), groups[i - 1].getHeight());
+            groups[i].setBounds(25, titleLabel.getY() + titleLabel.getHeight() + 5 + groups[i - 1].getHeight() + 5, groups[i - 1].getWidth(), groups[i - 1].getHeight());
             comboboxesOut[i].setBounds(groups[i].getX() + 10, groups[i].getY() + 15, comboboxesOut[i - 1].getWidth(), comboboxesOut[i - 1].getHeight());
         }
         else if (i > 0 && i >= 11) {
@@ -141,7 +154,7 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::resized()
         comboboxesIn[i].setBounds(comboboxesOut[i].getX(), sliders[i].getY() + sliders[i].getHeight() + 5, comboboxesOut[i].getWidth(), comboboxesOut[i].getHeight());
     }
 
-    resetButton.setBounds(WINDOW_WIDTH - 110, WINDOW_HEIGHT - 40, 100, 30);
+    resetButton.setBounds(groups[21].getX(), groups[21].getY() + groups[21].getHeight() + 5, groups[21].getWidth(), 30);
 }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::sliderValueChanged(Slider* slider) {
