@@ -5,6 +5,8 @@
 
 VTS plugin to remap a midi note number to another based on its velocity.
 
+![screenshot](https://user-images.githubusercontent.com/5066378/226111440-5d9adbca-3bfd-4aa1-964a-64a4499571d7.png)
+
 # Motivation
 
 I started to create this plugin for a single purpose which is to workaround the problem with the Alesis Crimson 2 module that has only one single note for the HiHat, Crash Left and Crash Right, that's why in the BETA version you see these as groups, and also only three fixed possibilities of remapping, in this case, the notes 8 (HiHat), 49 (Crash Left), and 57 (Crash Right). Using this plugin together with your favorite drums VTS (Steven Slate, EZDrummer, etc) you can get it working better and have a sound more smooth and dynamic.
