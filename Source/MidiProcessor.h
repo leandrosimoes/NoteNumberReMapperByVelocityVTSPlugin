@@ -26,10 +26,14 @@ private:
 		for (int i = 0; i < 22; i++)
 		{
 			int currentNoteIn = (notesIn[i]->load() - 2);
+			int currentNoteOut = (notesOut[i]->load() - 2);
+
+			if (currentNoteIn < 0 || currentNoteOut < 0) continue;
+
 			float currentVelocity = roundFloatToInt(velocities[i]->load());
 
-			if (currentNoteIn >= 0 && currentNoteIn == currentNotePlayed && currentVelocityPlayed <= currentVelocity)
-				currentMessage.setNoteNumber((notesOut[i]->load() - 2));
+			if (currentNoteIn == currentNotePlayed && currentVelocityPlayed <= currentVelocity)
+				currentMessage.setNoteNumber(currentNoteOut);
 		}
 
 		processedBuffer.addEvent(currentMessage, samplePos);
