@@ -44,37 +44,18 @@ private:
 
     Label titleLabel;
 
-    GroupComponent hihatGroup;
-    GroupComponent crashLeftGroup;
-    GroupComponent crashRightGroup;
+    GroupComponent groups[22];
 
-    Slider hihatSlider;
-    Slider crashLeftSlider;
-    Slider crashRightSlider;
+    Slider sliders[22];
 
-    ComboBox hihatNoteInCB;
-    ComboBox hihatNoteOutCB;
+    ComboBox comboboxesIn[22];
+    ComboBox comboboxesOut[22];
 
-    ComboBox crashLeftNoteInCB;
-    ComboBox crashLeftNoteOutCB;
-
-    ComboBox crashRightNoteInCB;
-    ComboBox crashRightNoteOutCB;
-
+    std::unique_ptr<SliderAttachment> sliderAttatchments[22];
+    std::unique_ptr<ComboBoxAttatchment> comboboxInAttatchments[22];
+    std::unique_ptr<ComboBoxAttatchment> comboboxOutAttatchments[22];
+    
     TextButton resetButton;
-
-    std::unique_ptr<SliderAttachment> hihatSliderAttachment;
-    std::unique_ptr<SliderAttachment> crashLeftSliderAttachment;
-    std::unique_ptr<SliderAttachment> crashRightSliderAttachment;
-
-    std::unique_ptr<ComboBoxAttatchment> hihatNoteInCBAttachment;
-    std::unique_ptr<ComboBoxAttatchment> hihatNoteOutCBAttachment;
-
-    std::unique_ptr<ComboBoxAttatchment> crashLeftNoteInCBAttachment;
-    std::unique_ptr<ComboBoxAttatchment> crashLeftNoteOutCBAttachment;
-
-    std::unique_ptr<ComboBoxAttatchment> crashRightNoteInCBAttachment;
-    std::unique_ptr<ComboBoxAttatchment> crashRightNoteOutCBAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NoteNumberRemaperByVelocityAudioProcessorEditor)
 };

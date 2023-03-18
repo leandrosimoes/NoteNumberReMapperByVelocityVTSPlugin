@@ -9,6 +9,19 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
+{
+    AudioProcessorValueTreeState::ParameterLayout layout;
+
+    for (int i = 0; i < 22; ++i) {
+        layout.add(std::make_unique<AudioParameterFloat>("slider" + String(i), "slider" + String(i), 0.0f, 127.0f, 75.0f));
+        layout.add(std::make_unique<AudioParameterInt>("noteIn" + String(i), "noteIn" + String(i), 1, 128, 0));
+        layout.add(std::make_unique<AudioParameterInt>("noteOut" + String(i), "noteOut" + String(i), 1, 128, 0));
+    }
+
+    return layout;
+}
+
 //==============================================================================
 NoteNumberRemaperByVelocityAudioProcessor::NoteNumberRemaperByVelocityAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -20,18 +33,7 @@ NoteNumberRemaperByVelocityAudioProcessor::NoteNumberRemaperByVelocityAudioProce
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-                        parameters(*this, nullptr, juce::Identifier("NoteNumberRemaperByVelocityAudioProcessor"),
-                        {
-                            std::make_unique<juce::AudioParameterFloat>("hihatVelocity", "HihatVelocity", 0.0f, 127.0f, 75.0f),
-                            std::make_unique<juce::AudioParameterFloat>("crashLeftVelocity", "CrashLeftVelocity", 0.0f, 127.0f, 80.0f),
-                            std::make_unique<juce::AudioParameterFloat>("crashRightVelocity", "CrashRightVelocity", 0.0f, 127.0f, 80.0f),
-                            std::make_unique<juce::AudioParameterInt>("hihatNoteIn", "HihatNoteIn", 1, 128, 9),
-                            std::make_unique<juce::AudioParameterInt>("hihatNoteOut", "HihatNoteOut", 1, 128, 8),
-                            std::make_unique<juce::AudioParameterInt>("crashLeftNoteIn", "CrashLeftNoteIn", 1, 128, 50),
-                            std::make_unique<juce::AudioParameterInt>("crashLeftNoteOut", "CrashLeftNoteOut", 1, 128, 49),
-                            std::make_unique<juce::AudioParameterInt>("crashRightNoteIn", "CrashRightNoteIn", 1, 128, 58),
-                            std::make_unique<juce::AudioParameterInt>("crashRightNoteOut", "CrashRightNoteOut", 1, 128, 57)
-                        })
+                        parameters(*this, nullptr, juce::Identifier("NoteNumberRemaperByVelocityAudioProcessor"), createParameterLayout())
 #endif
 {
     midiProcessor.setDefaultValues();
@@ -181,18 +183,12 @@ void NoteNumberRemaperByVelocityAudioProcessor::setStateInformation(const void* 
         if (xmlState->hasTagName(parameters.state.getType())) {
             parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
 
-            midiProcessor.hihatVelocity = parameters.getRawParameterValue("hihatVelocity");
-            midiProcessor.crashLeftVelocity = parameters.getRawParameterValue("crashLeftVelocity");
-            midiProcessor.crashRightVelocity = parameters.getRawParameterValue("crashRightVelocity");
-
-            midiProcessor.hihatNoteIn->store(roundFloatToInt(parameters.getRawParameterValue("hihatNoteIn")->load()));
-            midiProcessor.hihatNoteOut->store(roundFloatToInt(parameters.getRawParameterValue("hihatNoteOut")->load()));
-
-            midiProcessor.crashLeftNoteIn->store(roundFloatToInt(parameters.getRawParameterValue("crashLeftNoteIn")->load()));
-            midiProcessor.crashLeftNoteOut->store(roundFloatToInt(parameters.getRawParameterValue("crashLeftNoteOut")->load()));
-
-            midiProcessor.crashRightNoteIn->store(roundFloatToInt(parameters.getRawParameterValue("crashRightNoteIn")->load()));
-            midiProcessor.crashRightNoteOut->store(roundFloatToInt(parameters.getRawParameterValue("crashRightNoteOut")->load()));
+            for (int i = 0; i < 22; i++)
+            {
+                midiProcessor.velocities[i]->store(parameters.getRawParameterValue("slider" + std::to_string(i))->load());
+                midiProcessor.notesIn[i]->store(roundFloatToInt(parameters.getRawParameterValue("noteIn" + std::to_string(i))->load()));
+                midiProcessor.notesOut[i]->store(roundFloatToInt(parameters.getRawParameterValue("noteOut" + std::to_string(i))->load()));
+            }
         }
     }
 }

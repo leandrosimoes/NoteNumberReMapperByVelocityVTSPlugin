@@ -9,8 +9,8 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-const int WINDOW_WIDTH = 500;
-const int WINDOW_HEIGHT = 400;
+const int WINDOW_WIDTH = 900;
+const int WINDOW_HEIGHT = 600;
 
 //==============================================================================
 NoteNumberRemaperByVelocityAudioProcessorEditor::NoteNumberRemaperByVelocityAudioProcessorEditor (NoteNumberRemaperByVelocityAudioProcessor& p)
@@ -33,144 +33,66 @@ NoteNumberRemaperByVelocityAudioProcessorEditor::NoteNumberRemaperByVelocityAudi
  }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::setupNoteInCBs() {
-    // HIHAT
-    hihatNoteInCB.addSectionHeading("Note IN");
-    hihatNoteInCB.addSeparator();
-    hihatNoteInCB.addListener(this);
+    for (int i = 0; i < 22; i++)
+    {
+        comboboxesIn[i].addSectionHeading("Note IN");
+        comboboxesIn[i].addSeparator();
+        comboboxesIn[i].addListener(this);
 
-    // CRASH LEFT
-    crashLeftNoteInCB.addSectionHeading("Note IN");
-    crashLeftNoteInCB.addSeparator();
-    crashLeftNoteInCB.addListener(this);
+        for (int j = 0; j <= 127; j++) {
+            comboboxesIn[i].addItem(std::to_string(j), j + 1);
+        }
 
-    // CRASH RIGHT
-    crashRightNoteInCB.addSectionHeading("Note IN");
-    crashRightNoteInCB.addSeparator();
-    crashRightNoteInCB.addListener(this);
+        addAndMakeVisible(comboboxesIn[i]);
 
-    hihatNoteInCB.addItem("8", 9);
-    crashLeftNoteInCB.addItem("49", 50);
-    crashRightNoteInCB.addItem("57", 58);
-
-    // ADDING ITEMS TO ALL CBS
-    /*for (int i = 0; i <= 127; i++) {
-        hihatNoteInCB.addItem(std::to_string(i), i + 1);
-        crashLeftNoteInCB.addItem(std::to_string(i), i + 1);
-        crashRightNoteInCB.addItem(std::to_string(i), i + 1);
-    }*/
-
-    // MAKING ALL CBS VISIBLE
-    addAndMakeVisible(hihatNoteInCB);
-    addAndMakeVisible(crashLeftNoteInCB);
-    addAndMakeVisible(crashRightNoteInCB);
-
-    // ATTATCHING ALL CBS
-    hihatNoteInCBAttachment.reset(new ComboBoxAttatchment(audioProcessor.parameters, "hihatNoteIn", hihatNoteInCB));
-    crashLeftNoteInCBAttachment.reset(new ComboBoxAttatchment(audioProcessor.parameters, "crashLeftNoteIn", crashLeftNoteInCB));
-    crashRightNoteInCBAttachment.reset(new ComboBoxAttatchment(audioProcessor.parameters, "crashRightNoteIn", crashRightNoteInCB));
+        comboboxInAttatchments[i].reset(new ComboBoxAttatchment(audioProcessor.parameters, "noteIn" + std::to_string(i), comboboxesIn[i]));
+    }
 }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::setupResetButton() {
     resetButton.setButtonText("Reset");
-    resetButton.onClick = [this]() {
-        hihatNoteInCB.setSelectedId(9);
-        hihatNoteOutCB.setSelectedId(8);
-        crashLeftNoteInCB.setSelectedId(50);
-        crashLeftNoteOutCB.setSelectedId(49);
-        crashRightNoteInCB.setSelectedId(58);
-        crashRightNoteOutCB.setSelectedId(57);
-
-        hihatSlider.setValue(75.0f);
-        crashLeftSlider.setValue(85.0f);
-        crashRightSlider.setValue(85.0f);
-    };
+    resetButton.onClick = [this]() {};
 
     addAndMakeVisible(resetButton);
 }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::setupNoteOutCBs() {
-    // HIHAT
-    hihatNoteOutCB.addSectionHeading("Note OUT");
-    hihatNoteOutCB.addSeparator();
-    hihatNoteOutCB.addListener(this);
+    for (int i = 0; i < 22; i++)
+    {
+        comboboxesOut[i].addSectionHeading("Note Out");
+        comboboxesOut[i].addSeparator();
+        comboboxesOut[i].addListener(this);
 
-    // CRASH LEFT
-    crashLeftNoteOutCB.addSectionHeading("Note OUT");
-    crashLeftNoteOutCB.addSeparator();
-    crashLeftNoteOutCB.addListener(this);
+        for (int j = 0; j <= 127; j++) {
+            comboboxesOut[i].addItem(std::to_string(j), j + 1);
+        }
 
-    // CRASH RIGHT
-    crashRightNoteOutCB.addSectionHeading("Note OUT");
-    crashRightNoteOutCB.addSeparator();
-    crashRightNoteOutCB.addListener(this);
+        addAndMakeVisible(comboboxesOut[i]);
 
-    // ADDING ITEMS TO ALL CBS
-    for (int i = 0; i <= 127; i++) {
-        if (i == 8 || i == 49 || i == 57) continue;
-
-        hihatNoteOutCB.addItem(std::to_string(i), i + 1);
-        crashLeftNoteOutCB.addItem(std::to_string(i), i + 1);
-        crashRightNoteOutCB.addItem(std::to_string(i), i + 1);
+        comboboxOutAttatchments[i].reset(new ComboBoxAttatchment(audioProcessor.parameters, "noteOut" + std::to_string(i), comboboxesOut[i]));
     }
-
-    // MAKING ALL CBS VISIBLE
-    addAndMakeVisible(hihatNoteOutCB);
-    addAndMakeVisible(crashLeftNoteOutCB);
-    addAndMakeVisible(crashRightNoteOutCB);
-
-    // ATTATCHING ALL CBS
-    hihatNoteOutCBAttachment.reset(new ComboBoxAttatchment(audioProcessor.parameters, "hihatNoteOut", hihatNoteOutCB));
-    crashLeftNoteOutCBAttachment.reset(new ComboBoxAttatchment(audioProcessor.parameters, "crashLeftNoteOut", crashLeftNoteOutCB));
-    crashRightNoteOutCBAttachment.reset(new ComboBoxAttatchment(audioProcessor.parameters, "crashRightNoteOut", crashRightNoteOutCB));
 }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::setupGroups() {
-    // HIHAT
-    hihatGroup.setText("HiHat");
-    hihatGroup.setTextLabelPosition(Justification::centredTop);
-
-    // CRASH LEFT
-    crashLeftGroup.setText("Crash Left");
-    crashLeftGroup.setTextLabelPosition(Justification::centredTop);
-
-    // CRASH RIGHT
-    crashRightGroup.setText("Crash Right");
-    crashRightGroup.setTextLabelPosition(Justification::centredTop);
-
-    addAndMakeVisible(hihatGroup);
-    addAndMakeVisible(crashLeftGroup);
-    addAndMakeVisible(crashRightGroup);
+    for (int i = 0; i < 22; i++)
+    {
+        addAndMakeVisible(groups[i]);
+    }
 }
 
  void NoteNumberRemaperByVelocityAudioProcessorEditor::setupSliders() {
-     // HIHAT
-     hihatSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-     hihatSlider.setTextBoxStyle(Slider::TextBoxBelow, true, 100, 25);
-     hihatSlider.setRange(0.0f, 127.0f, 1.0f);
-     hihatSlider.setValue(70.0f);
-     hihatSlider.addListener(this);
+     for (int i = 0; i < 22; i++)
+     {
+         sliders[i].setSliderStyle(Slider::SliderStyle::LinearVertical);
+         sliders[i].setTextBoxStyle(Slider::TextBoxBelow, true, 100, 25);
+         sliders[i].setRange(0.0f, 127.0f, 1.0f);
+         sliders[i].setValue(70.0f);
+         sliders[i].addListener(this);
 
-     // CRASH LEFT
-     crashLeftSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-     crashLeftSlider.setTextBoxStyle(Slider::TextBoxBelow, true, 100, 25);
-     crashLeftSlider.setRange(0.0f, 127.0f, 1.0f);
-     crashLeftSlider.setValue(70.0f);
-     crashLeftSlider.addListener(this);
+         addAndMakeVisible(sliders[i]);
 
-     // CRASH RIGHT
-     crashRightSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-     crashRightSlider.setTextBoxStyle(Slider::TextBoxBelow, true, 100, 25);
-     crashRightSlider.setRange(0.0f, 127.0f, 1.0f);
-     crashRightSlider.setValue(70.0f);
-     crashRightSlider.addListener(this);
-
-     addAndMakeVisible(hihatSlider);
-     addAndMakeVisible(crashLeftSlider);
-     addAndMakeVisible(crashRightSlider);
-
-     hihatSliderAttachment.reset(new SliderAttachment(audioProcessor.parameters, "hihatVelocity", hihatSlider));
-     crashLeftSliderAttachment.reset(new SliderAttachment(audioProcessor.parameters, "crashLeftVelocity", crashLeftSlider));
-     crashRightSliderAttachment.reset(new SliderAttachment(audioProcessor.parameters, "crashRightVelocity", crashRightSlider));
+         sliderAttatchments[i].reset(new SliderAttachment(audioProcessor.parameters, "slider" + std::to_string(i), sliders[i]));
+     }
  }
 
 NoteNumberRemaperByVelocityAudioProcessorEditor::~NoteNumberRemaperByVelocityAudioProcessorEditor()
@@ -194,62 +116,49 @@ void NoteNumberRemaperByVelocityAudioProcessorEditor::resized()
 
     titleLabel.setBounds(0, 10, WINDOW_WIDTH, 30);
 
-    hihatGroup.setBounds(50, titleLabel.getY() + titleLabel.getHeight() + 5, (WINDOW_WIDTH - 100) / 3, WINDOW_HEIGHT - 100);
-    hihatNoteOutCB.setBounds(hihatGroup.getX() + 10, hihatGroup.getY() + 20, hihatGroup.getWidth() - 20, 30);
-    hihatNoteInCB.setBounds(hihatGroup.getX() + 10, hihatGroup.getY() + hihatGroup.getHeight() - 40, hihatNoteOutCB.getWidth(), hihatNoteOutCB.getHeight());
+    for (int i = 0; i < 22; i++)
+    {
+        groups[i].setText(std::to_string(i + 1));
 
-    hihatSlider.setBounds(
-        hihatNoteOutCB.getX(), 
-        hihatNoteOutCB.getY() + hihatNoteOutCB.getHeight() + 5, 
-        hihatNoteInCB.getWidth(),
-        hihatGroup.getHeight() - hihatNoteInCB.getHeight() - hihatNoteOutCB.getHeight() - 40
-    );
+        if (i == 0) {
+            groups[i].setBounds(50, titleLabel.getY() + titleLabel.getHeight() + 5, (WINDOW_WIDTH - 150) / 11, (WINDOW_HEIGHT - 100) / 2);
+            comboboxesOut[i].setBounds(groups[i].getX() + 10, groups[i].getY() + 15, groups[i].getWidth() - 20, 30);
+        }
+        else if (i > 0 && i < 11) {
+            groups[i].setBounds(groups[i - 1].getX() + groups[i - 1].getWidth() + 5, titleLabel.getY() + titleLabel.getHeight() + 5, groups[i - 1].getWidth(), groups[i - 1].getHeight());
+            comboboxesOut[i].setBounds(groups[i].getX() + 10, groups[i].getY() + 15, comboboxesOut[i - 1].getWidth(), comboboxesOut[i - 1].getHeight());
+        }
+        else if (i == 11) {
+            groups[i].setBounds(50, titleLabel.getY() + titleLabel.getHeight() + 5 + groups[i - 1].getHeight() + 5, groups[i - 1].getWidth(), groups[i - 1].getHeight());
+            comboboxesOut[i].setBounds(groups[i].getX() + 10, groups[i].getY() + 15, comboboxesOut[i - 1].getWidth(), comboboxesOut[i - 1].getHeight());
+        }
+        else if (i > 0 && i >= 11) {
+            groups[i].setBounds(groups[i - 1].getX() + groups[i - 1].getWidth() + 5, titleLabel.getY() + titleLabel.getHeight() + 5 + groups[i - 1].getHeight() + 5, groups[i - 1].getWidth(), groups[i - 1].getHeight());
+            comboboxesOut[i].setBounds(groups[i].getX() + 10, groups[i].getY() + 15, comboboxesOut[i - 1].getWidth(), comboboxesOut[i - 1].getHeight());
+        }
 
-    crashLeftGroup.setBounds(hihatGroup.getX() + hihatGroup.getWidth() + 5, titleLabel.getY() + titleLabel.getHeight() + 5, hihatGroup.getWidth(), hihatGroup.getHeight());
-    crashLeftNoteOutCB.setBounds(crashLeftGroup.getX() + 10, crashLeftGroup.getY() + 20, crashLeftGroup.getWidth() - 20, 30);
-    crashLeftNoteInCB.setBounds(crashLeftGroup.getX() + 10, crashLeftGroup.getY() + crashLeftGroup.getHeight() - 40, crashLeftNoteOutCB.getWidth(), crashLeftNoteOutCB.getHeight());
-
-    crashLeftSlider.setBounds(
-        crashLeftNoteOutCB.getX(),
-        crashLeftNoteOutCB.getY() + crashLeftNoteOutCB.getHeight() + 5,
-        crashLeftNoteInCB.getWidth(),
-        crashLeftGroup.getHeight() - crashLeftNoteInCB.getHeight() - crashLeftNoteOutCB.getHeight() - 40
-    );
-
-    crashRightGroup.setBounds(crashLeftGroup.getX() + crashLeftGroup.getWidth() + 5, titleLabel.getY() + titleLabel.getHeight() + 5, crashLeftGroup.getWidth(), crashLeftGroup.getHeight());
-    crashRightNoteOutCB.setBounds(crashRightGroup.getX() + 10, crashRightGroup.getY() + 20, crashRightGroup.getWidth() - 20, 30);
-    crashRightNoteInCB.setBounds(crashRightGroup.getX() + 10, crashRightGroup.getY() + crashRightGroup.getHeight() - 40, crashRightNoteOutCB.getWidth(), crashRightNoteOutCB.getHeight());
-
-    crashRightSlider.setBounds(
-        crashRightNoteOutCB.getX(),
-        crashRightNoteOutCB.getY() + crashRightNoteOutCB.getHeight() + 5,
-        crashRightNoteInCB.getWidth(),
-        crashRightGroup.getHeight() - crashRightNoteInCB.getHeight() - crashRightNoteOutCB.getHeight() - 40
-    );
+        sliders[i].setBounds(comboboxesOut[i].getX(), comboboxesOut[i].getY() + comboboxesOut[i].getHeight() + 5, groups[i].getWidth() - 20, groups[i].getHeight() - 95);
+        comboboxesIn[i].setBounds(comboboxesOut[i].getX(), sliders[i].getY() + sliders[i].getHeight() + 5, comboboxesOut[i].getWidth(), comboboxesOut[i].getHeight());
+    }
 
     resetButton.setBounds(WINDOW_WIDTH - 110, WINDOW_HEIGHT - 40, 100, 30);
 }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::sliderValueChanged(Slider* slider) {
-    if (slider == &hihatSlider)
-        audioProcessor.midiProcessor.hihatVelocity->store(slider->getValue());
-    if (slider == &crashLeftSlider)
-        audioProcessor.midiProcessor.crashLeftVelocity->store(slider->getValue());
-    if (slider == &crashRightSlider)
-        audioProcessor.midiProcessor.crashRightVelocity->store(slider->getValue());
+    for (int i = 0; i < 22; i++)
+    {
+        if (slider == &sliders[i])
+            audioProcessor.midiProcessor.velocities[i]->store(slider->getValue());
+    }
 }
 
 void NoteNumberRemaperByVelocityAudioProcessorEditor::comboBoxChanged(ComboBox* cb) {
-    if (cb == &hihatNoteInCB)
-        audioProcessor.midiProcessor.hihatNoteIn->store(cb->getSelectedIdAsValue().getValue());
-    if (cb == &hihatNoteOutCB)
-        audioProcessor.midiProcessor.hihatNoteOut->store(cb->getSelectedIdAsValue().getValue());
-    if (cb == &crashLeftNoteInCB)
-        audioProcessor.midiProcessor.crashLeftNoteIn->store(cb->getSelectedIdAsValue().getValue());
-    if (cb == &crashLeftNoteOutCB)
-        audioProcessor.midiProcessor.crashLeftNoteOut->store(cb->getSelectedIdAsValue().getValue());
-    if (cb == &crashRightNoteInCB)
-        audioProcessor.midiProcessor.crashRightNoteIn->store(cb->getSelectedIdAsValue().getValue());
-    if (cb == &crashRightNoteOutCB)
-        audioProcessor.midiProcessor.crashRightNoteOut->store(cb->getSelectedIdAsValue().getValue());
+    for (int i = 0; i < 22; i++)
+    {
+        if (cb == &comboboxesIn[i])
+            audioProcessor.midiProcessor.notesIn[i]->store(cb->getSelectedIdAsValue().getValue());
+
+        if (cb == &comboboxesOut[i])
+            audioProcessor.midiProcessor.notesOut[i]->store(cb->getSelectedIdAsValue().getValue());
+    }
 }
