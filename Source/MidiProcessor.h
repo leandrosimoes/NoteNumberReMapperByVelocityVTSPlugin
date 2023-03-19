@@ -32,7 +32,7 @@ private:
 
 			float currentVelocity = roundFloatToInt(velocities[i]->load());
 
-			if (currentNoteIn == currentNotePlayed && currentVelocityPlayed <= currentVelocity)
+			if (currentNoteIn == currentNotePlayed && currentVelocityPlayed >= currentVelocity)
 				currentMessage.setNoteNumber(currentNoteOut);
 		}
 
