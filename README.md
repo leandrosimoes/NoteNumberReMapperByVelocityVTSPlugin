@@ -34,6 +34,7 @@ I'm currently working on a video tutorial, but basically, you have to use this a
 - [ ] Change the off option in the dropdowns to an on/off toggle button.
 - [ ] Add a "learn" button to the velocity slider so the user can set the velocity by playing instead of using the slider directly.
 - [ ] Add a "learn" button to the `Note IN` dropdown so the user can set the note by playing instead of using the dropdown.
+- [ ] Add notes keys in the notes dropdowns for a better UX.
 
 ### Credits
 
