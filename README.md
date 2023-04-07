@@ -1,7 +1,7 @@
 # Note Number ReMapper By Velocity VTS Plugin (Beta)
 
-[<img src="https://img.shields.io/badge/slack-@lesimoes/help-blue.svg?logo=slack">](https://lesimoes.slack.com/messages/C04JV5CRGJH) 
-[<img src="https://img.shields.io/badge/discord-@lesimoes/help-blue.svg?logo=discord">](https://discord.gg/7xegRfQjPz) 
+[<img src="https://img.shields.io/badge/slack-@lesimoes/help-blue.svg?logo=slack">](https://lesimoes.slack.com/messages/C0529HW9ZV0) 
+[<img src="https://img.shields.io/badge/discord-@lesimoes/help-blue.svg?logo=discord">](https://discord.gg/zNkB3XvQpA) 
 
 VTS plugin to remap a midi note number to another based on its velocity.
 
