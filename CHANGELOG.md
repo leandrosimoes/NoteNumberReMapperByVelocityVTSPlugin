@@ -2,7 +2,7 @@
 
 ## v1.0.1
 
-#### Added
+#### Enhancements
 
 * Now you can set multiple mappings to the same input note with different velocities break points. For example, you can set the input note `8` to be remapped to `9` with a velocity of `50` and to `10` with a velocity of `100`. This way you can have a more expressive control over the remapping and use different samples for different velocities.
 
