@@ -155,7 +155,7 @@
  #define JucePlugin_ARAFactoryID           "com.lesimoes_dev.NoteNumberReMapperByVelocity.factory"
 #endif
 #ifndef  JucePlugin_ARADocumentArchiveID
- #define JucePlugin_ARADocumentArchiveID   "com.lesimoes_dev.NoteNumberReMapperByVelocity.aradocumentarchive.0.1.0"
+ #define JucePlugin_ARADocumentArchiveID   "com.lesimoes_dev.NoteNumberReMapperByVelocity.aradocumentarchive.1.0.0"
 #endif
 #ifndef  JucePlugin_ARACompatibleArchiveIDs
  #define JucePlugin_ARACompatibleArchiveIDs  ""

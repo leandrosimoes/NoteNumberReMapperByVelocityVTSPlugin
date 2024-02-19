@@ -1,6 +1,6 @@
 {
   "name": "notenumberremapperbyvelocityvtsplugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "[<img src=\"https://img.shields.io/badge/slack-@lesimoes/help-blue.svg?logo=slack\">](https://lesimoes.slack.com/messages/C04JV5CRGJH)  [<img src=\"https://img.shields.io/badge/discord-@lesimoes/help-blue.svg?logo=discord\">](https://discord.gg/7xegRfQjPz)",
   "main": "index.js",
   "scripts": {

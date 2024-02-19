@@ -23,6 +23,13 @@ private:
 		auto currentNotePlayed = currentMessage.getNoteNumber();
 		auto currentVelocityPlayed = currentMessage.getVelocity();
 
+		// Keep track of the maximum velocity for the current note
+		// This ensure to get the most appropriate note if there 
+		// are multiple notes set with the same note number but with different velocities
+		float higherVelocityFound = 0.0f;
+		
+		int finalNoteOut = -1;
+
 		for (int i = 0; i < 22; i++)
 		{
 			int currentNoteIn = (notesIn[i]->load() - 2);
@@ -32,9 +39,14 @@ private:
 
 			float currentVelocity = roundFloatToInt(velocities[i]->load());
 
-			if (currentNoteIn == currentNotePlayed && currentVelocityPlayed >= currentVelocity)
-				currentMessage.setNoteNumber(currentNoteOut);
+			if (currentNoteIn == currentNotePlayed && currentVelocityPlayed >= currentVelocity && currentVelocity >= higherVelocityFound) {
+				higherVelocityFound = currentVelocity;
+				finalNoteOut = currentNoteOut;
+			}
 		}
+
+		if (finalNoteOut > -1)
+			currentMessage.setNoteNumber(finalNoteOut);
 
 		processedBuffer.addEvent(currentMessage, samplePos);
 	}
