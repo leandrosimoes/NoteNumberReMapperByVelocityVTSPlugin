@@ -1,8 +1,5 @@
 # Note Number ReMapper By Velocity VST Plugin (Beta)
 
-[<img src="https://img.shields.io/badge/slack-@lesimoes/help-blue.svg?logo=slack">](https://lesimoes.slack.com/messages/C0529HW9ZV0) 
-[<img src="https://img.shields.io/badge/discord-@lesimoes/help-blue.svg?logo=discord">](https://discord.gg/zNkB3XvQpA) 
-
 VST plugin to remap a midi note number to another based on its velocity.
 
 ![screenshot](https://user-images.githubusercontent.com/5066378/226111440-5d9adbca-3bfd-4aa1-964a-64a4499571d7.png)
